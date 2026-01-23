@@ -23,5 +23,4 @@ public class Artist {
 
     @OneToMany
     private List<Concert> concerts;
-
 }
