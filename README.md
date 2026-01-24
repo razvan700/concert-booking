@@ -12,4 +12,8 @@ is not found. The only functionalities in the service layer at this point
 are save and get.
 
 For the controller, I will initially add get and post to retreive/add artists and 
-concerts, to be able to test.
+concerts, to be able to test. 
+
+After connecting to the postgres database, I succesfully tested the post method.
+Abandoned the docker containerisation because the software 
+doesn't work on the machine, do to a graphics issue.
