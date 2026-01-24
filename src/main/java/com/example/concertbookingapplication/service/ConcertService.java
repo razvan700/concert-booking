@@ -24,4 +24,8 @@ public class ConcertService {
     public Optional<Concert> findById(UUID id) {
         return concertRepository.findById(id);
     }
+
+    public Concert save(Concert concert){
+        return concertRepository.save(concert);
+    }
 }
