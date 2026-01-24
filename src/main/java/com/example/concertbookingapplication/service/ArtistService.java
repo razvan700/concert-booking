@@ -25,7 +25,7 @@ public class ArtistService {
         return artistRepository.findById(id);
     }
 
-    public Artist saveArtist(Artist artist) {
-        return artistRepository.save(artist);
+    public void saveArtist(Artist artist) {
+        artistRepository.save(artist);
     }
 }

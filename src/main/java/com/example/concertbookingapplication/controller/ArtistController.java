@@ -1,13 +1,12 @@
 package com.example.concertbookingapplication.controller;
 
-import com.example.concertbookingapplication.dto.ArtistDto;
 import com.example.concertbookingapplication.entity.Artist;
 import com.example.concertbookingapplication.service.ArtistService;
-import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/artists")
@@ -27,8 +26,10 @@ public class ArtistController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addArtist(@RequestBody Artist artist) {
+    public ResponseEntity<?> addArtist(@RequestParam String name) {
 
+        Artist artist = new Artist();
+        artist.setName(name);
         artistService.saveArtist(artist);
         return ResponseEntity.ok(artist);
     }
