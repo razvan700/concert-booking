@@ -37,9 +37,10 @@ public class ArtistService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<Artist> getArtistById(UUID id) {
+    public Optional<ArtistResponseDto> getArtistById(UUID id) {
 
-        return artistRepository.findById(id);
+        Optional<Artist> artist = artistRepository.findById(id);
+        return artist.map(artistMapper::toDto);
     }
 
     public ArtistResponseDto saveArtist(ArtistCreateDto artist) {

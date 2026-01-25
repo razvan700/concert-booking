@@ -36,12 +36,11 @@ public class ArtistController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getArtistById(@PathVariable UUID id) {
 
-        Optional<Artist> artist = artistService.getArtistById(id);
-        if (!artist.isPresent()) {
+        Optional<ArtistResponseDto> artist = artistService.getArtistById(id);
+        if (artist.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        ArtistResponseDto artistResponseDto = artistMapper.toDto(artist.get());
-        return ResponseEntity.ok(artistResponseDto);
+        return ResponseEntity.ok(artist.get());
     }
 
     @PostMapping

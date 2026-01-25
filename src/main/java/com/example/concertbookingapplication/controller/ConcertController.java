@@ -1,11 +1,14 @@
 package com.example.concertbookingapplication.controller;
 
 
+import com.example.concertbookingapplication.dto.ConcertCreateDto;
+import com.example.concertbookingapplication.dto.ConcertResponseDto;
 import com.example.concertbookingapplication.entity.Concert;
 import com.example.concertbookingapplication.service.ConcertService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -23,12 +26,13 @@ public class ConcertController {
     @GetMapping("/all")
     public ResponseEntity<?> getConcerts() {
 
-        return ResponseEntity.ok(concertService.findAll());
+        List<ConcertResponseDto> concerts = concertService.findAll();
+        return ResponseEntity.ok(concerts);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getConcertById(@PathVariable UUID id) {
-        Optional<Concert> concert = concertService.findById(id);
+        Optional<ConcertResponseDto> concert = concertService.getConcertById(id);
         if (concert.isPresent()) {
             return ResponseEntity.ok(concert.get());
         }
@@ -36,11 +40,9 @@ public class ConcertController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addConcert(@RequestParam String name) {
+    public ResponseEntity<?> addConcert(@RequestBody ConcertCreateDto dto) {
 
-        Concert concert = new Concert();
-        concert.setName(name);
-        concertService.save(concert);
-        return ResponseEntity.ok().build();
+        ConcertResponseDto concertResponseDto = concertService.save(dto);
+        return ResponseEntity.ok(concertResponseDto);
     }
 }
