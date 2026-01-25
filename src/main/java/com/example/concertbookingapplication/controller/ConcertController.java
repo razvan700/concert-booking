@@ -16,11 +16,13 @@ public class ConcertController {
     private final ConcertService concertService;
 
     public ConcertController(ConcertService concertService) {
+
         this.concertService = concertService;
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getConcerts() {
+
         return ResponseEntity.ok(concertService.findAll());
     }
 

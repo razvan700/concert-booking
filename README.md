@@ -1,4 +1,6 @@
 I started by creating the basic entities for artists and concerts.
+Used UUIDs for assuring uniqueness for ids in the future, across services.
+
 I hold a list in each entity of objects from the other entity.
 I designed it as a many-to-many because an artist can perform in multiple concerts, 
 and a concert can have multiple artists.
@@ -14,6 +16,8 @@ are save and get.
 For the controller, I will initially add get and post to retreive/add artists and 
 concerts, to be able to test. 
 
-After connecting to the postgres database, I succesfully tested the post method.
+After connecting to the postgres database, I successfully tested the post and get methods.
 Abandoned the docker containerisation because the software 
-doesn't work on the machine, do to a graphics issue.
+doesn't work on the machine, due to a graphics issues.
+
+Added mappers from and to dto for artists and concerts. Ignored the lists and ids in conversion.

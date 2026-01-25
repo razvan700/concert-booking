@@ -14,18 +14,22 @@ public class ConcertService {
     private final ConcertRepository concertRepository;
 
     public ConcertService(ConcertRepository concertRepository) {
+
         this.concertRepository = concertRepository;
     }
 
     public List<Concert> findAll() {
+
         return concertRepository.findAll();
     }
 
     public Optional<Concert> findById(UUID id) {
+
         return concertRepository.findById(id);
     }
 
     public Concert save(Concert concert){
+
         return concertRepository.save(concert);
     }
 }

@@ -28,6 +28,7 @@ public class ArtistController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getArtistById(@PathVariable UUID id) {
+
         Optional<Artist> artist = artistService.getArtistById(id);
         if (!artist.isPresent()) {
             return ResponseEntity.notFound().build();
