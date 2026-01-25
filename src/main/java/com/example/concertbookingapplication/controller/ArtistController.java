@@ -1,6 +1,9 @@
 package com.example.concertbookingapplication.controller;
 
+import com.example.concertbookingapplication.dto.ArtistCreateDto;
+import com.example.concertbookingapplication.dto.ArtistResponseDto;
 import com.example.concertbookingapplication.entity.Artist;
+import com.example.concertbookingapplication.mapper.ArtistMapper;
 import com.example.concertbookingapplication.service.ArtistService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +18,18 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-    public ArtistController(ArtistService artistService) {
+    private final ArtistMapper artistMapper;
+
+    public ArtistController(ArtistService artistService, ArtistMapper artistMapper) {
+
         this.artistService = artistService;
+        this.artistMapper = artistMapper;
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> getAllArtists() {
 
-        List<Artist> artists = artistService.getAllArtists();
+        List<ArtistResponseDto> artists = artistService.getAllArtists();
         return ResponseEntity.ok(artists);
     }
 
@@ -33,15 +40,14 @@ public class ArtistController {
         if (!artist.isPresent()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(artist.get());
+        ArtistResponseDto artistResponseDto = artistMapper.toDto(artist.get());
+        return ResponseEntity.ok(artistResponseDto);
     }
 
     @PostMapping
-    public ResponseEntity<?> addArtist(@RequestParam String name) {
+    public ResponseEntity<?> addArtist(@RequestBody ArtistCreateDto dto) {
 
-        Artist artist = new Artist();
-        artist.setName(name);
-        artistService.saveArtist(artist);
-        return ResponseEntity.ok(artist);
+        ArtistResponseDto artistResponseDto = artistService.saveArtist(dto);
+        return ResponseEntity.ok(artistResponseDto);
     }
 }
