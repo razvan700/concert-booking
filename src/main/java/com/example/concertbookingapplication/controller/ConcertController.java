@@ -3,7 +3,6 @@ package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.ConcertCreateDto;
 import com.example.concertbookingapplication.dto.ConcertResponseDto;
-import com.example.concertbookingapplication.entity.Concert;
 import com.example.concertbookingapplication.service.ConcertService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +40,13 @@ public class ConcertController {
 
     @PostMapping
     public ResponseEntity<?> addConcert(@RequestBody ConcertCreateDto dto) {
+
+        ConcertResponseDto concertResponseDto = concertService.save(dto);
+        return ResponseEntity.ok(concertResponseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateConcert(@RequestBody ConcertCreateDto dto) {
 
         ConcertResponseDto concertResponseDto = concertService.save(dto);
         return ResponseEntity.ok(concertResponseDto);

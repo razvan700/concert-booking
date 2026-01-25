@@ -2,8 +2,6 @@ package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.ArtistCreateDto;
 import com.example.concertbookingapplication.dto.ArtistResponseDto;
-import com.example.concertbookingapplication.entity.Artist;
-import com.example.concertbookingapplication.mapper.ArtistMapper;
 import com.example.concertbookingapplication.service.ArtistService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +16,9 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-    private final ArtistMapper artistMapper;
-
-    public ArtistController(ArtistService artistService, ArtistMapper artistMapper) {
+    public ArtistController(ArtistService artistService) {
 
         this.artistService = artistService;
-        this.artistMapper = artistMapper;
     }
 
     @GetMapping("/all")
@@ -45,6 +40,13 @@ public class ArtistController {
 
     @PostMapping
     public ResponseEntity<?> addArtist(@RequestBody ArtistCreateDto dto) {
+
+        ArtistResponseDto artistResponseDto = artistService.saveArtist(dto);
+        return ResponseEntity.ok(artistResponseDto);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> updateArtist(@RequestBody ArtistCreateDto dto) {
 
         ArtistResponseDto artistResponseDto = artistService.saveArtist(dto);
         return ResponseEntity.ok(artistResponseDto);
