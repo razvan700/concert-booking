@@ -4,6 +4,8 @@ import java.util.UUID;
 
 public class ConcertCreateDto {
 
+    private UUID id;
+
     private String name;
 
     public void setName(String name) {
@@ -14,5 +16,13 @@ public class ConcertCreateDto {
     public String getName() {
 
         return name;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

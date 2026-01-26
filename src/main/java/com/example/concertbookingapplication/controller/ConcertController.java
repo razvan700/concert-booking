@@ -45,7 +45,7 @@ public class ConcertController {
         return ResponseEntity.ok(concertResponseDto);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateConcert(@RequestBody ConcertCreateDto dto) {
 
         ConcertResponseDto concertResponseDto = concertService.save(dto);

@@ -25,8 +25,8 @@ public class ConcertService {
     }
 
     public List<ConcertResponseDto> findAll() {
-        List<Concert> concerts = concertRepository.findAll();
 
+        List<Concert> concerts = concertRepository.findAll();
         return concerts.stream()
                 .map(concertMapper::toResponse)
                 .collect(Collectors.toList());
@@ -42,6 +42,20 @@ public class ConcertService {
 
         Concert concertToBeSaved = concertMapper.toEntity(concert);
         concertRepository.save(concertToBeSaved);
+
         return concertMapper.toResponse(concertToBeSaved);
+    }
+
+    public Optional<ConcertResponseDto> update(ConcertCreateDto concert, UUID id) {
+
+        Optional<Concert> concertToBeUpdated = concertRepository.findById(id);
+        if(concertToBeUpdated.isPresent()){
+            concertToBeUpdated.get().setName(concert.getName());
+            concertRepository.save(concertToBeUpdated.get());
+
+            return Optional.of(concertMapper.toResponse(concertToBeUpdated.get()));
+        }
+
+        return Optional.empty();
     }
 }
