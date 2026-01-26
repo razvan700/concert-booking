@@ -21,3 +21,5 @@ Abandoned the docker containerisation because the software
 doesn't work on the machine, due to a graphics issues.
 
 Added mappers from and to dto for artists and concerts. Ignored the lists and ids in conversion.
+Added custom exceptions for entity not found, and the exception handler. I will try to handle 
+the null values of optionals within the service layer, so the controller layer stays as clean as possible.
