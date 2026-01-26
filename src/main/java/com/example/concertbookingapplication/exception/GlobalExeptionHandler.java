@@ -11,12 +11,14 @@ public class GlobalExeptionHandler {
     @ExceptionHandler(ArtistNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleArtistNotFound(ArtistNotFoundException ex) {
+
         return ex.getMessage();
     }
 
     @ExceptionHandler(ConcertNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleConcertNotFound(ConcertNotFoundException ex) {
+
         return ex.getMessage();
     }
 }

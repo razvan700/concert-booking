@@ -27,9 +27,13 @@ public class Artist {
     )
     private Set<Concert> concerts = new HashSet<>();
 
-    public Artist() {}
+    public Artist() {
+    }
 
-    public UUID getId() { return id; }
+    public UUID getId() {
+
+        return id;
+    }
 
     public void setId(UUID id) {
 
@@ -37,18 +41,22 @@ public class Artist {
     }
 
     public String getName() {
+
         return name;
     }
 
     public void setName(String name) {
+
         this.name = name;
     }
 
     public Set<Concert> getConcerts() {
+
         return concerts;
     }
 
     public void setConcerts(Set<Concert> concerts) {
+
         this.concerts = concerts;
     }
 }

@@ -42,13 +42,16 @@ public class ArtistService {
     public ArtistResponseDto getArtistById(UUID id) {
 
         Artist artist = artistRepository.findById(id).orElseThrow(() -> new ArtistNotFoundException(id));
+
         return artistMapper.toDto(artist);
     }
 
     public ArtistResponseDto saveArtist(ArtistCreateDto artist) {
 
         Artist artistToBeSaved = artistMapper.toEntity(artist);
+
         artistRepository.save(artistToBeSaved);
+
         return artistMapper.toDto(artistToBeSaved);
     }
 
@@ -57,7 +60,7 @@ public class ArtistService {
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ArtistNotFoundException(id));
 
-        artist.setName(dto.getName());
+        artistMapper.updateEntityFromDto(dto, artist);
 
         artistRepository.save(artist);
 

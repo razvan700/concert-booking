@@ -3,7 +3,9 @@ package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.ConcertCreateDto;
 import com.example.concertbookingapplication.dto.ConcertResponseDto;
+import com.example.concertbookingapplication.dto.ConcertUpdateDto;
 import com.example.concertbookingapplication.service.ConcertService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,29 +28,31 @@ public class ConcertController {
     public ResponseEntity<?> getConcerts() {
 
         List<ConcertResponseDto> concerts = concertService.findAll();
+
         return ResponseEntity.ok(concerts);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getConcertById(@PathVariable UUID id) {
-        Optional<ConcertResponseDto> concert = concertService.getConcertById(id);
-        if (concert.isPresent()) {
-            return ResponseEntity.ok(concert.get());
-        }
-        return ResponseEntity.notFound().build();
+
+        ConcertResponseDto concert = concertService.getConcertById(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(concert);
     }
 
     @PostMapping
     public ResponseEntity<?> addConcert(@RequestBody ConcertCreateDto dto) {
 
         ConcertResponseDto concertResponseDto = concertService.save(dto);
-        return ResponseEntity.ok(concertResponseDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(concertResponseDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateConcert(@RequestBody ConcertCreateDto dto) {
+    public ResponseEntity<?> updateConcert(@RequestBody ConcertUpdateDto dto, @PathVariable UUID id) {
 
-        ConcertResponseDto concertResponseDto = concertService.save(dto);
-        return ResponseEntity.ok(concertResponseDto);
+        ConcertResponseDto concertResponseDto = concertService.update(dto, id);
+
+        return ResponseEntity.status(HttpStatus.OK).body(concertResponseDto);
     }
 }
