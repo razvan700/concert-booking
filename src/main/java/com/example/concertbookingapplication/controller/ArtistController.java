@@ -2,12 +2,13 @@ package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.ArtistCreateDto;
 import com.example.concertbookingapplication.dto.ArtistResponseDto;
+import com.example.concertbookingapplication.dto.ArtistUpdateDto;
 import com.example.concertbookingapplication.service.ArtistService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -31,24 +32,23 @@ public class ArtistController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getArtistById(@PathVariable UUID id) {
 
-        Optional<ArtistResponseDto> artist = artistService.getArtistById(id);
-        if (artist.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(artist.get());
+        ArtistResponseDto artist = artistService.getArtistById(id);
+        return ResponseEntity.ok(artist);
     }
 
     @PostMapping
     public ResponseEntity<?> addArtist(@RequestBody ArtistCreateDto dto) {
 
-        ArtistResponseDto artistResponseDto = artistService.saveArtist(dto);
-        return ResponseEntity.ok(artistResponseDto);
+        ArtistResponseDto created = artistService.saveArtist(dto);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(created);
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateArtist(@RequestBody ArtistCreateDto dto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateArtist(@RequestBody ArtistUpdateDto dto, @PathVariable UUID id) {
 
-        ArtistResponseDto artistResponseDto = artistService.saveArtist(dto);
-        return ResponseEntity.ok(artistResponseDto);
+        ArtistResponseDto artistResponseDto = artistService.updateArtist(id, dto);
+        return ResponseEntity.status(HttpStatus.OK).body(artistResponseDto);
     }
 }
