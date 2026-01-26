@@ -23,3 +23,7 @@ doesn't work on the machine, due to a graphics issues.
 Added mappers from and to dto for artists and concerts. Ignored the lists and ids in conversion.
 Added custom exceptions for entity not found, and the exception handler. I will try to handle 
 the null values of optionals within the service layer, so the controller layer stays as clean as possible.
+
+After adding exceptions, I noticed optionals are redundant because I can throw the exceptions from the service layer
+and using the global handler, they can be automatically sent to the controller. Not found situations will not need to
+be handled explicitly in the controller or on another layer with optionals.
