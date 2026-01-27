@@ -1,5 +1,6 @@
 package com.example.concertbookingapplication.dto;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ConcertResponseDto {
@@ -8,9 +9,11 @@ public class ConcertResponseDto {
 
     private String name;
 
+    private List<UUID> artistIds;
+
     public String getName() {
 
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -20,11 +23,19 @@ public class ConcertResponseDto {
 
     public UUID getId() {
 
-        return id;
+        return this.id;
     }
 
     public void setId(UUID id) {
 
         this.id = id;
+    }
+
+    public List<UUID> getArtistIds() {
+        return this.artistIds;
+    }
+
+    public void setArtistIds(List<UUID> artistIds) {
+        this.artistIds = artistIds;
     }
 }
