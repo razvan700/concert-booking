@@ -112,4 +112,30 @@ public class ConcertService {
 
         return concertResponseDto;
     }
+
+    @Transactional
+    public ConcertResponseDto removeArtistFromConcert(UUID concertId, UUID artistId) {
+
+        Concert concert = concertRepository.findById(concertId)
+                .orElseThrow(() -> new ConcertNotFoundException(concertId));
+
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new ArtistNotFoundException(artistId));
+
+        concert.getArtists().remove(artist);
+
+        artist.getConcerts().remove(concert);
+
+        List<UUID> artistIds = concertMapper.mapArtistIds(concert.getArtists());
+
+        ConcertResponseDto concertResponseDto = new ConcertResponseDto();
+
+        concertResponseDto.setId(concertId);
+
+        concertResponseDto.setArtistIds(artistIds);
+
+        concertResponseDto.setName(concert.getName());
+
+        return concertResponseDto;
+    }
 }

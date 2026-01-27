@@ -81,4 +81,12 @@ public class ConcertController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(concertResponseDto);
     }
+
+    @DeleteMapping("/{concertId}/artists/{artistId}")
+    public ResponseEntity<?> removeArtistFromConcert(@PathVariable UUID concertId, @PathVariable UUID artistId) {
+
+        ConcertResponseDto concertResponseDto = concertService.removeArtistFromConcert(concertId, artistId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(concertResponseDto);
+    }
 }
