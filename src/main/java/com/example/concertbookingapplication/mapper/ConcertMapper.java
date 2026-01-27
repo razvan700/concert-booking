@@ -1,14 +1,8 @@
 package com.example.concertbookingapplication.mapper;
 
-import com.example.concertbookingapplication.dto.ArtistUpdateDto;
-import com.example.concertbookingapplication.dto.ConcertCreateDto;
-import com.example.concertbookingapplication.dto.ConcertResponseDto;
-import com.example.concertbookingapplication.dto.ConcertUpdateDto;
-import com.example.concertbookingapplication.entity.Artist;
+import com.example.concertbookingapplication.dto.*;
 import com.example.concertbookingapplication.entity.Concert;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface ConcertMapper {
@@ -20,4 +14,8 @@ public interface ConcertMapper {
     ConcertResponseDto toResponse(Concert concert);
 
     void updateEntityFromDto(ConcertUpdateDto dto, @MappingTarget Concert concert);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "name", source = "name")
+    void patchEntityFromDto(ConcertPatchDto dto, @MappingTarget Concert concert);
 }

@@ -1,6 +1,7 @@
 package com.example.concertbookingapplication.service;
 
 import com.example.concertbookingapplication.dto.ConcertCreateDto;
+import com.example.concertbookingapplication.dto.ConcertPatchDto;
 import com.example.concertbookingapplication.dto.ConcertResponseDto;
 import com.example.concertbookingapplication.dto.ConcertUpdateDto;
 import com.example.concertbookingapplication.entity.Concert;
@@ -61,5 +62,22 @@ public class ConcertService {
         concertMapper.updateEntityFromDto(concert, concertToBeUpdated);
 
         return concertMapper.toResponse(concertToBeUpdated);
+    }
+
+    public ConcertResponseDto patchConcert(UUID id, ConcertPatchDto concertPatchDto) {
+
+        Concert concertToBeUpdated = concertRepository.findById(id)
+                .orElseThrow(() -> new ConcertNotFoundException(id));
+
+        concertMapper.patchEntityFromDto(concertPatchDto, concertToBeUpdated);
+
+        concertRepository.save(concertToBeUpdated);
+
+        return concertMapper.toResponse(concertToBeUpdated);
+    }
+
+    public void deleteConcert(UUID id) {
+
+        concertRepository.deleteById(id);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.concertbookingapplication.mapper;
 
 import com.example.concertbookingapplication.dto.ArtistCreateDto;
+import com.example.concertbookingapplication.dto.ArtistPatchDto;
 import com.example.concertbookingapplication.dto.ArtistResponseDto;
 import com.example.concertbookingapplication.dto.ArtistUpdateDto;
 import com.example.concertbookingapplication.entity.Artist;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface ArtistMapper {
@@ -18,4 +17,8 @@ public interface ArtistMapper {
     ArtistResponseDto toDto(Artist artist);
 
     void updateEntityFromDto(ArtistUpdateDto dto, @MappingTarget Artist artist);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "name", source = "name")
+    void patchEntityFromDto(ArtistPatchDto dto, @MappingTarget Artist artist);
 }

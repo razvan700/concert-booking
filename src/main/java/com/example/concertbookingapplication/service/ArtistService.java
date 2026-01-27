@@ -1,6 +1,7 @@
 package com.example.concertbookingapplication.service;
 
 import com.example.concertbookingapplication.dto.ArtistCreateDto;
+import com.example.concertbookingapplication.dto.ArtistPatchDto;
 import com.example.concertbookingapplication.dto.ArtistResponseDto;
 import com.example.concertbookingapplication.dto.ArtistUpdateDto;
 import com.example.concertbookingapplication.entity.Artist;
@@ -65,5 +66,26 @@ public class ArtistService {
         artistRepository.save(artist);
 
         return artistMapper.toDto(artist);
+    }
+
+    public ArtistResponseDto patchArtist(UUID id, ArtistPatchDto dto) {
+
+        Artist artist = artistRepository.findById(id)
+                .orElseThrow(() -> new ArtistNotFoundException(id));
+
+        System.out.println("BEFORE PATCH = " + artist.getName());
+
+        artistMapper.patchEntityFromDto(dto, artist);
+
+        System.out.println("AFTER PATCH = " + artist.getName());
+
+        artistRepository.save(artist);
+
+        return artistMapper.toDto(artist);
+    }
+
+    public void deleteArtist(UUID id) {
+
+        artistRepository.deleteById(id);
     }
 }

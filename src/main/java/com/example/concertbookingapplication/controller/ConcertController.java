@@ -2,6 +2,7 @@ package com.example.concertbookingapplication.controller;
 
 
 import com.example.concertbookingapplication.dto.ConcertCreateDto;
+import com.example.concertbookingapplication.dto.ConcertPatchDto;
 import com.example.concertbookingapplication.dto.ConcertResponseDto;
 import com.example.concertbookingapplication.dto.ConcertUpdateDto;
 import com.example.concertbookingapplication.service.ConcertService;
@@ -10,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -54,5 +54,22 @@ public class ConcertController {
         ConcertResponseDto concertResponseDto = concertService.update(dto, id);
 
         return ResponseEntity.status(HttpStatus.OK).body(concertResponseDto);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ConcertResponseDto> patchConcert(
+            @PathVariable UUID id,
+            @RequestBody ConcertPatchDto dto) {
+
+        ConcertResponseDto concertResponseDto = concertService.patchConcert(id, dto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(concertResponseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteConcert(@PathVariable UUID id) {
+
+        concertService.deleteConcert(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
