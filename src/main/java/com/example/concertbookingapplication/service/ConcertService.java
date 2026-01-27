@@ -4,10 +4,14 @@ import com.example.concertbookingapplication.dto.ConcertCreateDto;
 import com.example.concertbookingapplication.dto.ConcertPatchDto;
 import com.example.concertbookingapplication.dto.ConcertResponseDto;
 import com.example.concertbookingapplication.dto.ConcertUpdateDto;
+import com.example.concertbookingapplication.entity.Artist;
 import com.example.concertbookingapplication.entity.Concert;
+import com.example.concertbookingapplication.exception.ArtistNotFoundException;
 import com.example.concertbookingapplication.exception.ConcertNotFoundException;
 import com.example.concertbookingapplication.mapper.ConcertMapper;
+import com.example.concertbookingapplication.repository.ArtistRepository;
 import com.example.concertbookingapplication.repository.ConcertRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,12 +24,14 @@ public class ConcertService {
 
     private final ConcertRepository concertRepository;
     private final ConcertMapper concertMapper;
+    private final ArtistRepository artistRepository;
 
-    public ConcertService(ConcertRepository concertRepository, ConcertMapper concertMapper) {
+    public ConcertService(ConcertRepository concertRepository, ConcertMapper concertMapper, ArtistRepository artistRepository) {
 
         this.concertRepository = concertRepository;
 
         this.concertMapper = concertMapper;
+        this.artistRepository = artistRepository;
     }
 
     public List<ConcertResponseDto> findAll() {
@@ -79,5 +85,31 @@ public class ConcertService {
     public void deleteConcert(UUID id) {
 
         concertRepository.deleteById(id);
+    }
+
+    @Transactional
+    public ConcertResponseDto addArtistToConcert(UUID concertId, UUID artistId) {
+
+        Concert concert = concertRepository.findById(concertId)
+                .orElseThrow(() -> new ConcertNotFoundException(concertId));
+
+        Artist artist = artistRepository.findById(artistId)
+                .orElseThrow(() -> new ArtistNotFoundException(artistId));
+
+        concert.getArtists().add(artist);
+
+        artist.getConcerts().add(concert);
+
+        List<UUID> artistIds = concertMapper.mapArtistIds(concert.getArtists());
+
+        ConcertResponseDto concertResponseDto = new ConcertResponseDto();
+
+        concertResponseDto.setId(concertId);
+
+        concertResponseDto.setArtistIds(artistIds);
+
+        concertResponseDto.setName(concert.getName());
+
+        return concertResponseDto;
     }
 }

@@ -13,7 +13,7 @@ wrapped in Optional. In the future code, I will handle the case where it
 is not found. The only functionalities in the service layer at this point
 are save and get.
 
-For the controller, I will initially add get and post to retreive/add artists and 
+For the controller, I will initially add get and post to retrieve/add artists and 
 concerts, to be able to test. 
 
 After connecting to the postgres database, I successfully tested the post and get methods.
@@ -27,3 +27,7 @@ the null values of optionals within the service layer, so the controller layer s
 After adding exceptions, I noticed optionals are redundant because I can throw the exceptions from the service layer
 and using the global handler, they can be automatically sent to the controller. Not found situations will not need to
 be handled explicitly in the controller or on another layer with optionals.
+
+Between artists and concerts, I decided to hold the relationship on the side of the concert, since it makes 
+more sense to assign artists to concerts. In the concert controller, there is an endpoint for assigning an artist
+to a concert. 

@@ -19,11 +19,29 @@ public class Concert {
 
     private String name;
 
-    @ManyToMany(mappedBy = "concerts")
+    @ManyToMany
+    @JoinTable(
+            name = "concert_artist",
+            joinColumns = @JoinColumn(name = "concert_id"),
+            inverseJoinColumns = @JoinColumn(name = "artist_id")
+    )
     private Set<Artist> artists = new HashSet<>();
 
-    public Concert() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Concert)) return false;
+        Concert other = (Concert) o;
+        return id != null && id.equals(other.id);
     }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
+
+
+    public Concert() {}
 
     public void setName(String name) {
 

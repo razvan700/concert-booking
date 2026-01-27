@@ -70,6 +70,15 @@ public class ConcertController {
     public ResponseEntity<Void> deleteConcert(@PathVariable UUID id) {
 
         concertService.deleteConcert(id);
+
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/{concertId}/artists/{artistId}")
+    public ResponseEntity<?> addConcertToArtist(@PathVariable UUID concertId, @PathVariable UUID artistId) {
+
+        ConcertResponseDto  concertResponseDto = concertService.addArtistToConcert(concertId, artistId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(concertResponseDto);
     }
 }
