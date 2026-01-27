@@ -3,6 +3,7 @@ package com.example.concertbookingapplication.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +27,12 @@ public class Concert {
             inverseJoinColumns = @JoinColumn(name = "artist_id")
     )
     private Set<Artist> artists = new HashSet<>();
+
+    private String type;
+
+    private LocalDateTime startTime;
+
+    private LocalDateTime endTime;
 
     @Override
     public boolean equals(Object o) {
@@ -71,5 +78,29 @@ public class Concert {
     public void setArtists(Set<Artist> artists) {
 
         this.artists = artists;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 }
