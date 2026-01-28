@@ -28,6 +28,7 @@ public class Concert {
     )
     private Set<Artist> artists = new HashSet<>();
 
+    @Column(name = "concert_type")
     private String type;
 
     private LocalDateTime startTime;
