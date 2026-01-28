@@ -1,4 +1,4 @@
-package com.example.concertbookingapplication;
+package com.example.concertbookingapplication.concert;
 
 import com.example.concertbookingapplication.entity.Concert;
 import com.example.concertbookingapplication.repository.ConcertRepository;
@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class ConcertIntegrationTest {
+class CreateConcertIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,8 +48,6 @@ class ConcertIntegrationTest {
         Concert concert = concertRepository.findAll().get(0);
 
         assertEquals("Geneva2015", concert.getName());
-        System.out.println("TYPE FROM DB = [" + concert.getType() + "]");
-
         assertEquals("FESTIVAL", concert.getType());
         assertNotNull(concert.getStartTime());
         assertNotNull(concert.getEndTime());
