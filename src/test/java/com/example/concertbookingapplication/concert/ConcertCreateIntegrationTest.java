@@ -20,7 +20,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-class CreateConcertIntegrationTest {
+class ConcertCreateIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

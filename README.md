@@ -31,3 +31,5 @@ be handled explicitly in the controller or on another layer with optionals.
 Between artists and concerts, I decided to hold the relationship on the side of the concert, since it makes 
 more sense to assign artists to concerts. In the concert controller, there is an endpoint for assigning an artist
 to a concert. 
+
+Added integration tests for creation of a new concert and patching.
