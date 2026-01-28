@@ -32,4 +32,5 @@ Between artists and concerts, I decided to hold the relationship on the side of 
 more sense to assign artists to concerts. In the concert controller, there is an endpoint for assigning an artist
 to a concert. 
 
-Added integration tests for creation of a new concert and patching.
+Added integration tests for creation of a new concert and patching. Added unit tests for all concert service methods
+to improve coverage.
