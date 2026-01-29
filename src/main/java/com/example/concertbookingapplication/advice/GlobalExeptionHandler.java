@@ -1,10 +1,9 @@
-package com.example.concertbookingapplication.exception;
+package com.example.concertbookingapplication.advice;
 
-import org.springframework.http.HttpStatus;
+import com.example.concertbookingapplication.error.ErrorResponse;
+import com.example.concertbookingapplication.exception.ApplicationException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
