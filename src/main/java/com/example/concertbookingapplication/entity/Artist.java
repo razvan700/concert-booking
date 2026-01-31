@@ -20,7 +20,18 @@ public class Artist {
     private String name;
 
     @ManyToMany(mappedBy = "artists")
-    private Set<Concert> concerts = new HashSet<>();
+    private Set<Concert> concerts = new HashSet<>   ();
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Version
+    private int version;
 
     @Override
     public boolean equals(Object o) {

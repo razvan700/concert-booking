@@ -35,6 +35,17 @@ public class Concert {
 
     private LocalDateTime endTime;
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Version
+    private int version;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
