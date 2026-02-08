@@ -8,6 +8,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
+@Setter
+@Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class Artist {
 
@@ -22,16 +25,8 @@ public class Artist {
     @ManyToMany(mappedBy = "artists")
     private Set<Concert> concerts = new HashSet<>   ();
 
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
     @Version
-    private int version;
+    private Long version;
 
     @Override
     public boolean equals(Object o) {
@@ -44,38 +39,5 @@ public class Artist {
     @Override
     public int hashCode() {
         return getClass().hashCode();
-    }
-
-    public Artist() {
-    }
-
-    public UUID getId() {
-
-        return id;
-    }
-
-    public void setId(UUID id) {
-
-        this.id = id;
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public Set<Concert> getConcerts() {
-
-        return concerts;
-    }
-
-    public void setConcerts(Set<Concert> concerts) {
-
-        this.concerts = concerts;
     }
 }

@@ -1,30 +1,17 @@
 package com.example.concertbookingapplication.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
+@Getter
+@Setter
 public class ArtistResponseDto {
 
     private UUID id;
 
     private String name;
 
-    public String getName() {
-
-        return name;
-    }
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public UUID getId() {
-
-        return id;
-    }
-
-    public void setId(UUID id) {
-
-        this.id = id;
-    }
+    private Long version;
 }

@@ -9,12 +9,13 @@ import com.example.concertbookingapplication.exception.ArtistNotFoundException;
 import com.example.concertbookingapplication.mapper.ArtistMapper;
 import com.example.concertbookingapplication.repository.ArtistRepository;
 import com.example.concertbookingapplication.repository.ConcertRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+ 
 @Service
 public class ArtistService {
 
@@ -61,11 +62,17 @@ public class ArtistService {
         Artist artist = artistRepository.findById(id)
                 .orElseThrow(() -> new ArtistNotFoundException(id));
 
-        artistMapper.updateEntityFromDto(dto, artist);
+        Artist artistCompare = new Artist();
 
-        artistRepository.save(artist);
+        artistCompare.setId(id);
 
-        return artistMapper.toDto(artist);
+        artistCompare.setName(dto.getName());
+
+        artistCompare.setVersion(dto.getVersion());
+
+        artistCompare = artistRepository.save(artistCompare);
+
+        return artistMapper.toDto(artistCompare);
     }
 
     public ArtistResponseDto patchArtist(UUID id, ArtistPatchDto dto) {

@@ -1,10 +1,13 @@
 package com.example.concertbookingapplication.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Setter
+@Getter
 public class ConcertCreateDto {
 
     private UUID id;
@@ -16,50 +19,4 @@ public class ConcertCreateDto {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-
-
-    public void setName(String name) {
-
-        this.name = name;
-    }
-
-    public String getName() {
-
-        return name;
-    }
-
-    public UUID getId() {
-
-        return id;
-    }
-
-    public void setId(UUID id) {
-
-        this.id = id;
-    }
 }
