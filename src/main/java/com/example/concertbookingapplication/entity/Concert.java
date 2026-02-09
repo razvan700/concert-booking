@@ -31,6 +31,9 @@ public class Concert {
     )
     private Set<Artist> artists = new HashSet<>();
 
+    @OneToMany
+    private Set<Seat> seats = new HashSet<>();
+
     @Column(name = "concert_type")
     private String type;
 
