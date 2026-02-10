@@ -16,9 +16,11 @@ import java.util.UUID;
 public class Seat {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @Column(name = "seat_number")
+    @ManyToOne
+    private Concert concert;
+
     private int seatNo;
 }
