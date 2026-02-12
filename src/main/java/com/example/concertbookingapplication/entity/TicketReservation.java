@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,12 +38,11 @@ public class TicketReservation {
     private List<Seat> seats;
 
     @Column(nullable = false)
-    private LocalDateTime reservationTime;
+    private Instant reservationTime;
 
     @Column(nullable = false)
-    private LocalDateTime expiresAt;
+    private Instant expiresAt;
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 }
-

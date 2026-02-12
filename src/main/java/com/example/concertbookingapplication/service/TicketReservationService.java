@@ -12,7 +12,8 @@ import com.example.concertbookingapplication.repository.TicketReservationReposit
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,10 +55,12 @@ public class TicketReservationService {
             }
         }
 
+        Instant now = Instant.now();
+
         List<UUID> takenSeats =
                 ticketReservationRepository.findTakenSeatIds(
                         dto.getSeatIds(),
-                        LocalDateTime.now()
+                        now
                 );
 
         if (!takenSeats.isEmpty()) {
@@ -70,8 +73,8 @@ public class TicketReservationService {
         );
         reservation.setCustomerName(dto.getCustomerName());
         reservation.setSeats(seats);
-        reservation.setReservationTime(LocalDateTime.now());
-        reservation.setExpiresAt(LocalDateTime.now().plusMinutes(15));
+        reservation.setReservationTime(now);
+        reservation.setExpiresAt(now.plusSeconds(5));
         reservation.setStatus(ReservationStatus.ACTIVE);
 
         TicketReservation saved =
@@ -89,8 +92,10 @@ public class TicketReservationService {
                                 new IllegalArgumentException("Reservation not found")
                         );
 
+        Instant now = Instant.now();
+
         if (reservation.getStatus() != ReservationStatus.ACTIVE ||
-                reservation.getExpiresAt().isBefore(LocalDateTime.now())) {
+                reservation.getExpiresAt().isBefore(now)) {
             throw new IllegalStateException("Reservation expired");
         }
 
@@ -113,4 +118,3 @@ public class TicketReservationService {
         return ticketReservationMapper.toResponse(reservation);
     }
 }
-

@@ -3,7 +3,7 @@ package com.example.concertbookingapplication.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,6 +21,7 @@ public class TicketReservationResponseDto {
 
     private String status;
 
-    private LocalDateTime expiresAt;
-}
+    private Instant expiresAt;
 
+    private Instant reservationTime;
+}

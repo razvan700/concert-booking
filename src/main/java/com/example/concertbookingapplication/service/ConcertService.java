@@ -1,9 +1,6 @@
 package com.example.concertbookingapplication.service;
 
-import com.example.concertbookingapplication.dto.ConcertCreateDto;
-import com.example.concertbookingapplication.dto.ConcertPatchDto;
-import com.example.concertbookingapplication.dto.ConcertResponseDto;
-import com.example.concertbookingapplication.dto.ConcertUpdateDto;
+import com.example.concertbookingapplication.dto.*;
 import com.example.concertbookingapplication.entity.Artist;
 import com.example.concertbookingapplication.entity.Concert;
 import com.example.concertbookingapplication.entity.Seat;
@@ -68,6 +65,18 @@ public class ConcertService {
 
         return concertMapper.toResponse(saved);
     }
+
+    public List<SeatResponseDto> getSeatsForConcert(UUID concertId) {
+
+        Concert concert = concertRepository.findById(concertId)
+                .orElseThrow(() -> new IllegalArgumentException("Concert not found"));
+
+        return concert.getSeats()
+                .stream()
+                .map(seat -> new SeatResponseDto(seat.getId(), seat.getSeatNo()))
+                .toList();
+    }
+
 
     public ConcertResponseDto update(ConcertUpdateDto concert, UUID id) {
 

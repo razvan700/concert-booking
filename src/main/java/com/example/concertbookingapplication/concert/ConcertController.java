@@ -1,10 +1,7 @@
 package com.example.concertbookingapplication.concert;
 
 
-import com.example.concertbookingapplication.dto.ConcertCreateDto;
-import com.example.concertbookingapplication.dto.ConcertPatchDto;
-import com.example.concertbookingapplication.dto.ConcertResponseDto;
-import com.example.concertbookingapplication.dto.ConcertUpdateDto;
+import com.example.concertbookingapplication.dto.*;
 import com.example.concertbookingapplication.service.ConcertService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,17 @@ public class ConcertController {
 
         return ResponseEntity.status(HttpStatus.OK).body(concert);
     }
+
+    @GetMapping("/{concertId}/seats")
+    public ResponseEntity<List<SeatResponseDto>> getSeatsForConcert(
+            @PathVariable UUID concertId) {
+
+        List<SeatResponseDto> seats =
+                concertService.getSeatsForConcert(concertId);
+
+        return ResponseEntity.ok(seats);
+    }
+
 
     @PostMapping
     public ResponseEntity<?> addConcert(@RequestBody ConcertCreateDto dto) {
@@ -87,6 +95,6 @@ public class ConcertController {
 
         ConcertResponseDto concertResponseDto = concertService.removeArtistFromConcert(concertId, artistId);
 
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(concertResponseDto);
+        return ResponseEntity.noContent().build();
     }
 }
