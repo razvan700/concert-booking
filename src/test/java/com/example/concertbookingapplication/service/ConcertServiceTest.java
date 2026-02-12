@@ -82,15 +82,18 @@ class ConcertServiceTest {
     @Test
     void save_persistsAndReturnsDto() {
         ConcertCreateDto createDto = new ConcertCreateDto();
-        Concert concert = new Concert();
+        Concert concertToBeSaved = new Concert();
+        Concert savedConcert = new Concert();
         ConcertResponseDto responseDto = new ConcertResponseDto();
 
-        when(concertMapper.toEntity(createDto)).thenReturn(concert);
-        when(concertMapper.toResponse(concert)).thenReturn(responseDto);
+        when(concertMapper.toEntity(createDto)).thenReturn(concertToBeSaved);
+        when(concertRepository.save(concertToBeSaved)).thenReturn(savedConcert);
+        when(concertMapper.toResponse(savedConcert)).thenReturn(responseDto);
 
         ConcertResponseDto result = concertService.save(createDto);
 
-        verify(concertRepository).save(concert);
+        verify(concertRepository).save(concertToBeSaved);
+        verify(concertMapper).toResponse(savedConcert);
         assertNotNull(result);
     }
 

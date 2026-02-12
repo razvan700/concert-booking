@@ -10,8 +10,10 @@ import com.example.concertbookingapplication.repository.ConcertRepository;
 import com.example.concertbookingapplication.repository.SeatRepository;
 import com.example.concertbookingapplication.repository.TicketReservationRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -56,12 +58,13 @@ public class TicketReservationService {
         }
 
         Instant now = Instant.now();
+        System.out.println("JVM NOW: " + now);
 
         List<UUID> takenSeats =
                 ticketReservationRepository.findTakenSeatIds(
-                        dto.getSeatIds(),
-                        now
+                        dto.getSeatIds()
                 );
+
 
         if (!takenSeats.isEmpty()) {
             throw new IllegalStateException("Some seats are already reserved");
@@ -74,7 +77,7 @@ public class TicketReservationService {
         reservation.setCustomerName(dto.getCustomerName());
         reservation.setSeats(seats);
         reservation.setReservationTime(now);
-        reservation.setExpiresAt(now.plusSeconds(5));
+        reservation.setExpiresAt(now.plus(Duration.ofMinutes(15)));
         reservation.setStatus(ReservationStatus.ACTIVE);
 
         TicketReservation saved =
@@ -116,5 +119,12 @@ public class TicketReservationService {
         reservation.setStatus(ReservationStatus.CANCELLED);
 
         return ticketReservationMapper.toResponse(reservation);
+    }
+
+    @Scheduled(fixedRate = 10000)
+    @Transactional
+    public void expireOldReservations() {
+
+        ticketReservationRepository.expireOldReservations();
     }
 }
