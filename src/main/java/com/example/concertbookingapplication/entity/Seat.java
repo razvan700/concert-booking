@@ -19,7 +19,7 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Concert concert;
 
     private int seatNo;

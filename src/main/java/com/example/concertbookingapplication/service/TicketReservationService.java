@@ -1,9 +1,11 @@
 package com.example.concertbookingapplication.service;
 
 import com.example.concertbookingapplication.dto.TicketReservationCreateDto;
+import com.example.concertbookingapplication.dto.TicketReservationResponseDto;
 import com.example.concertbookingapplication.entity.Seat;
 import com.example.concertbookingapplication.entity.TicketReservation;
 import com.example.concertbookingapplication.enums.ReservationStatus;
+import com.example.concertbookingapplication.mapper.TicketReservationMapper;
 import com.example.concertbookingapplication.repository.ConcertRepository;
 import com.example.concertbookingapplication.repository.SeatRepository;
 import com.example.concertbookingapplication.repository.TicketReservationRepository;
@@ -20,19 +22,22 @@ public class TicketReservationService {
     private final TicketReservationRepository ticketReservationRepository;
     private final SeatRepository seatRepository;
     private final ConcertRepository concertRepository;
+    private final TicketReservationMapper ticketReservationMapper;
 
     public TicketReservationService(
             TicketReservationRepository ticketReservationRepository,
             SeatRepository seatRepository,
-            ConcertRepository concertRepository
+            ConcertRepository concertRepository,
+            TicketReservationMapper ticketReservationMapper
     ) {
         this.ticketReservationRepository = ticketReservationRepository;
         this.seatRepository = seatRepository;
         this.concertRepository = concertRepository;
+        this.ticketReservationMapper = ticketReservationMapper;
     }
 
     @Transactional
-    public TicketReservation createReservation(TicketReservationCreateDto dto) {
+    public TicketReservationResponseDto createReservation(TicketReservationCreateDto dto) {
 
         List<Seat> seats =
                 seatRepository.findAllByIdForUpdate(dto.getSeatIds());
@@ -56,9 +61,7 @@ public class TicketReservationService {
                 );
 
         if (!takenSeats.isEmpty()) {
-            throw new IllegalStateException(
-                    "Some seats are already reserved"
-            );
+            throw new IllegalStateException("Some seats are already reserved");
         }
 
         TicketReservation reservation = new TicketReservation();
@@ -71,11 +74,14 @@ public class TicketReservationService {
         reservation.setExpiresAt(LocalDateTime.now().plusMinutes(15));
         reservation.setStatus(ReservationStatus.ACTIVE);
 
-        return ticketReservationRepository.save(reservation);
+        TicketReservation saved =
+                ticketReservationRepository.save(reservation);
+
+        return ticketReservationMapper.toResponse(saved);
     }
 
     @Transactional
-    public void confirmReservation(UUID reservationId) {
+    public TicketReservationResponseDto confirmReservation(UUID reservationId) {
 
         TicketReservation reservation =
                 ticketReservationRepository.findById(reservationId)
@@ -89,10 +95,12 @@ public class TicketReservationService {
         }
 
         reservation.setStatus(ReservationStatus.CONFIRMED);
+
+        return ticketReservationMapper.toResponse(reservation);
     }
 
     @Transactional
-    public void cancelReservation(UUID reservationId) {
+    public TicketReservationResponseDto cancelReservation(UUID reservationId) {
 
         TicketReservation reservation =
                 ticketReservationRepository.findById(reservationId)
@@ -101,5 +109,8 @@ public class TicketReservationService {
                         );
 
         reservation.setStatus(ReservationStatus.CANCELLED);
+
+        return ticketReservationMapper.toResponse(reservation);
     }
 }
+

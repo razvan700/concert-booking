@@ -10,13 +10,9 @@ import java.util.UUID;
 @Getter
 public class ConcertCreateDto {
 
-    private UUID id;
-
     private String name;
-
     private String type;
-
     private LocalDateTime startTime;
-
     private LocalDateTime endTime;
+    private int capacity;
 }

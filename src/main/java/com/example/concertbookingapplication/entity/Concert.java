@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,8 +28,10 @@ public class Concert {
     )
     private Set<Artist> artists = new HashSet<>();
 
-    @OneToMany
-    private Set<Seat> seats = new HashSet<>();
+    @OneToMany(mappedBy = "concert", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Seat> seats = new ArrayList<>();
+
+    private int capacity;
 
     @Column(name = "concert_type")
     private String type;
@@ -43,17 +42,4 @@ public class Concert {
 
     @Version
     private Long version;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Concert)) return false;
-        Concert other = (Concert) o;
-        return id != null && id.equals(other.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
 }

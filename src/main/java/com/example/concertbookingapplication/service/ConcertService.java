@@ -6,6 +6,7 @@ import com.example.concertbookingapplication.dto.ConcertResponseDto;
 import com.example.concertbookingapplication.dto.ConcertUpdateDto;
 import com.example.concertbookingapplication.entity.Artist;
 import com.example.concertbookingapplication.entity.Concert;
+import com.example.concertbookingapplication.entity.Seat;
 import com.example.concertbookingapplication.exception.ArtistNotFoundException;
 import com.example.concertbookingapplication.exception.ConcertNotFoundException;
 import com.example.concertbookingapplication.mapper.ConcertMapper;
@@ -50,13 +51,22 @@ public class ConcertService {
         return concertMapper.toResponse(concert);
     }
 
-    public ConcertResponseDto save(ConcertCreateDto concert){
+    @Transactional
+    public ConcertResponseDto save(ConcertCreateDto dto) {
 
-        Concert concertToBeSaved = concertMapper.toEntity(concert);
+        Concert concert = concertMapper.toEntity(dto);
+        concert.setCapacity(dto.getCapacity());
 
-        concertRepository.save(concertToBeSaved);
+        for (int i = 1; i <= dto.getCapacity(); i++) {
+            Seat seat = new Seat();
+            seat.setSeatNo(i);
+            seat.setConcert(concert);
+            concert.getSeats().add(seat);
+        }
 
-        return concertMapper.toResponse(concertToBeSaved);
+        Concert saved = concertRepository.save(concert);
+
+        return concertMapper.toResponse(saved);
     }
 
     public ConcertResponseDto update(ConcertUpdateDto concert, UUID id) {
