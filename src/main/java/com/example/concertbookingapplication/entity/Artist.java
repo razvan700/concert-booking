@@ -23,7 +23,7 @@ public class Artist {
     private String name;
 
     @ManyToMany(mappedBy = "artists")
-    private Set<Concert> concerts = new HashSet<>   ();
+    private Set<Concert> concerts = new HashSet<>();
 
     @Version
     private Long version;

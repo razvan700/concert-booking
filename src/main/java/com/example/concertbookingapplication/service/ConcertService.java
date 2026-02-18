@@ -10,6 +10,9 @@ import com.example.concertbookingapplication.mapper.ConcertMapper;
 import com.example.concertbookingapplication.repository.ArtistRepository;
 import com.example.concertbookingapplication.repository.ConcertRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,6 +34,7 @@ public class ConcertService {
         this.artistRepository = artistRepository;
     }
 
+    @Cacheable("concertList")
     public List<ConcertResponseDto> findAll() {
 
         List<Concert> concerts = concertRepository.findAll();
@@ -40,6 +44,7 @@ public class ConcertService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "concerts", key = "#id")
     public ConcertResponseDto getConcertById(UUID id) {
 
         Concert concert = concertRepository.findById(id)
@@ -49,6 +54,7 @@ public class ConcertService {
     }
 
     @Transactional
+    @CacheEvict(value = "concertList", allEntries = true)
     public ConcertResponseDto save(ConcertCreateDto dto) {
 
         Concert concert = concertMapper.toEntity(dto);
@@ -77,7 +83,11 @@ public class ConcertService {
                 .toList();
     }
 
-
+    @Caching(evict = {
+            @CacheEvict(value = "concerts", key = "#id"),
+            @CacheEvict(value = "concertList", allEntries = true)
+    })
+    @Transactional
     public ConcertResponseDto update(ConcertUpdateDto concert, UUID id) {
 
         Concert concertToBeUpdated = concertRepository.findById(id)
@@ -88,6 +98,11 @@ public class ConcertService {
         return concertMapper.toResponse(concertToBeUpdated);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "concerts", key = "#id"),
+            @CacheEvict(value = "concertList", allEntries = true)
+    })
+    @Transactional
     public ConcertResponseDto patchConcert(UUID id, ConcertPatchDto concertPatchDto) {
 
         Concert concertToBeUpdated = concertRepository.findById(id)
@@ -100,11 +115,19 @@ public class ConcertService {
         return concertMapper.toResponse(concertToBeUpdated);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "concerts", key = "#id", beforeInvocation = true),
+            @CacheEvict(value = "concertList", allEntries = true)
+    })
     public void deleteConcert(UUID id) {
 
         concertRepository.deleteById(id);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "concerts", key = "#concertId"),
+            @CacheEvict(value = "concertList", allEntries = true)
+    })
     @Transactional
     public ConcertResponseDto addArtistToConcert(UUID concertId, UUID artistId) {
 
@@ -132,6 +155,10 @@ public class ConcertService {
     }
 
     @Transactional
+    @Caching(evict = {
+            @CacheEvict(value = "concerts", key = "#concertId"),
+            @CacheEvict(value = "concertList", allEntries = true)
+    })
     public ConcertResponseDto removeArtistFromConcert(UUID concertId, UUID artistId) {
 
         Concert concert = concertRepository.findById(concertId)
