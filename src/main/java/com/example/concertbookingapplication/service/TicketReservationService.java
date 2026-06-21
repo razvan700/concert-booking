@@ -5,6 +5,7 @@ import com.example.concertbookingapplication.dto.TicketReservationResponseDto;
 import com.example.concertbookingapplication.entity.Seat;
 import com.example.concertbookingapplication.entity.TicketReservation;
 import com.example.concertbookingapplication.enums.ReservationStatus;
+import com.example.concertbookingapplication.exception.SeatAlreadyReservedException;
 import com.example.concertbookingapplication.mapper.TicketReservationMapper;
 import com.example.concertbookingapplication.repository.ConcertRepository;
 import com.example.concertbookingapplication.repository.SeatRepository;
@@ -67,7 +68,7 @@ public class TicketReservationService {
 
 
         if (!takenSeats.isEmpty()) {
-            throw new IllegalStateException("Some seats are already reserved");
+            throw new SeatAlreadyReservedException();
         }
 
         TicketReservation reservation = new TicketReservation();
