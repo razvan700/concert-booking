@@ -1,5 +1,4 @@
-package com.example.concertbookingapplication.concert;
-
+package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.entity.Concert;
 import com.example.concertbookingapplication.repository.ConcertRepository;
@@ -15,48 +14,51 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
-class ConcertPatchIntegrationTest {
+class ConcertUpdateIntegrationTest {
 
     @Autowired
-    private MockMvc mockMvc;
+    MockMvc mockMvc;
 
     @Autowired
-    private ConcertRepository concertRepository;
+    ConcertRepository concertRepository;
 
     @Test
-    void patchConcert_updatesOnlyProvidedFields() throws Exception {
+    void putConcert_replacesAllFields() throws Exception {
 
         Concert concert = new Concert();
-        concert.setName("Geneva2015");
-        concert.setType("FESTIVAL");
-        concert.setStartTime(LocalDateTime.of(2026, 3, 21, 19, 30));
-        concert.setEndTime(LocalDateTime.of(2026, 3, 21, 22, 0));
-
+        concert.setName("Old");
+        concert.setType("CLUB");
+        concert.setStartTime(LocalDateTime.of(2026, 1, 1, 18, 0));
+        concert.setEndTime(LocalDateTime.of(2026, 1, 1, 20, 0));
         concert = concertRepository.save(concert);
 
         String json = """
         {
-          "name": "Geneva2016"
+          "name": "New",
+          "type": "FESTIVAL",
+          "startTime": "2026-03-21T19:30",
+          "endTime": "2026-03-21T22:00"
         }
         """;
 
-        mockMvc.perform(patch("/concerts/{id}", concert.getId())
+        mockMvc.perform(put("/concerts/{id}", concert.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk());
 
-        Concert patched = concertRepository.findById(concert.getId()).orElseThrow();
+        Concert updated = concertRepository.findById(concert.getId()).orElseThrow();
 
-        assertEquals("Geneva2016", patched.getName());
-        assertEquals("FESTIVAL", patched.getType());
-        assertEquals(LocalDateTime.of(2026, 3, 21, 19, 30), patched.getStartTime());
-        assertEquals(LocalDateTime.of(2026, 3, 21, 22, 0), patched.getEndTime());
+        assertEquals("New", updated.getName());
+        assertEquals("FESTIVAL", updated.getType());
+        assertEquals(LocalDateTime.of(2026,3,21,19,30), updated.getStartTime());
+        assertEquals(LocalDateTime.of(2026,3,21,22,0), updated.getEndTime());
     }
 }
+

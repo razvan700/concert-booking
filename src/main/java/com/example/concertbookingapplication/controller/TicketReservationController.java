@@ -1,4 +1,4 @@
-package com.example.concertbookingapplication.concert;
+package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.TicketReservationCreateDto;
 import com.example.concertbookingapplication.dto.TicketReservationResponseDto;

@@ -1,4 +1,4 @@
-package com.example.concertbookingapplication.concert;
+package com.example.concertbookingapplication.controller;
 
 import com.example.concertbookingapplication.dto.*;
 import com.example.concertbookingapplication.service.ArtistService;
@@ -36,7 +36,6 @@ public class ArtistController {
 
     @PostMapping
     public ResponseEntity<?> addArtist(@RequestBody ArtistCreateDto dto) {
-
         ArtistResponseDto created = artistService.saveArtist(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
